@@ -16,7 +16,8 @@
   var Snake = Snakes.Snake = function() {
     this.dir = "N";
     this.segments = [new Coord([5, 5])];
-
+    this.size = 1;
+    setInterval(function(){this.size += 1}.bind(this), 2000);
   };
 
   Snake.DIRS = ["N", "E", "S", "W"];
@@ -24,29 +25,51 @@
   Snake.prototype = {
     move : function() {
       var currentDir = this.dir
-      this.segments.map(function(segment) {
+      var that = this;
+      var segment = this.segments[this.segments.length-1];
+      // this.segments.map(function(segment) {
         switch (currentDir) {
           case "N":
-            segment.plus({row: -1, col: 0});
+            var newSegment = new Coord([segment.row, segment.col]);
+            newSegment.plus({row: -1, col: 0});
+            that.segments.push(newSegment);
+            if (that.segments.length > that.size)
+              that.segments.shift();
             break;
           case "S":
-            segment.plus({row: 1, col: 0});
+            var newSegment = new Coord([segment.row, segment.col]);
+            newSegment.plus({row: 1, col: 0});
+            that.segments.push(newSegment);
+            if (that.segments.length > that.size)
+              that.segments.shift();
             break;
           case "W":
-            segment.plus({row: 0, col: -1});
+            var newSegment = new Coord([segment.row, segment.col]);
+            newSegment.plus({row: 0, col: -1});
+            that.segments.push(newSegment);
+            if (that.segments.length > that.size);
+              that.segments.shift();
             break;
           case "E":
-            segment.plus({row: 0, col: 1});
+            var newSegment = new Coord([segment.row, segment.col]);
+            newSegment.plus({row: 0, col: 1});
+            that.segments.push(newSegment);
+            if (that.segments.length > that.size)
+              that.segments.shift();
             break;
           default:
             console.log("Snake is moving!");
         }
-      });
+      // });
     },
 
     turn : function(newDir) {
       this.dir = newDir;
-    }
+    },
+
+    apple : function() {
+
+    },
   };
 
 
@@ -72,9 +95,9 @@
             //     currentCell = "S";
             //   }
             // });
-            if (currentCell !== "S") {
-              currentRow.push(".");
-            }
+            // if (currentCell !== "S") {
+            //   currentRow.push(".");
+            // }
           }
           grid.push(currentRow);
         }
