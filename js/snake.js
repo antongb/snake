@@ -97,6 +97,8 @@
         if (segment.row === apple.row && segment.col === apple.col){
           this.size += 1;
           this.apples.shift();
+          var score = "Score: " + (this.size - 1);
+          $('#score').empty().html(score);
         }
       }
     },

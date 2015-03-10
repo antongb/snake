@@ -6,6 +6,15 @@
     this.board = board;
     this.board.setGrid();
 
+    // var audio = $('<audio />', {
+    //   autoPlay : 'autoplay',
+    //   controls : 'controls',
+    //   source : "http://youtu.be/ZlXMO-Tnx34"
+    // });
+    // $('body').append(audio);
+
+
+
     $("body").on("keydown", function(event){
       // var board = this.board;
       // console.log(event.keyCode);
