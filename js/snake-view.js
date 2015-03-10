@@ -34,9 +34,14 @@
           console.log("Wrong Key");
       }
     });
-
-    setInterval(this.render, 100);
-
+    window.refresh = setInterval(this.render, 100);
+    window.check = setInterval(function(){
+      if (board.snake.collision()){
+        clearInterval(window.refresh);
+        clearInterval(window.check);
+        this.gameover();
+      }
+    }.bind(this), 50);
 
   };
 
@@ -46,6 +51,9 @@
       var board = this.board;
       board.setGrid();
       view.$el.empty();
+      // if (board.snake.collision()){
+      //   clearInterval(window.refresh);
+      // }
 
       for (var row = 0; row < Snakes.Board.SIZE.rows; row++) {
         var $currentRow = $('<div class="row">');
@@ -56,14 +64,35 @@
               $currentCol.addClass("snake-segment");
             }
           });
-          var currentCell = board.grid[row][col];
-          if (currentCell === "S") {
-            $currentCol.addClass("snake-segment");
-          }
+          board.snake.apples.map(function(apple){
+            if (apple.row === row && apple.col === col) {
+              $currentCol.addClass("apple");
+            }
+          });
+          // var currentCell = board.grid[row][col];
+          // if (currentCell === "S") {
+          //   $currentCol.addClass("snake-segment");
+          // }
           $currentRow.append($currentCol);
         }
         view.$el.append($currentRow);
       }
+    },
+
+    gameover : function(){
+      var view = this;
+      var $gameover = $('<h2 class="gameover">')
+      $gameoverSpan = $('<span>');
+      $gameoverSpan.html("Game Over");
+      $gameover.append($gameoverSpan);
+      view.$el.append($gameover);
+
+      $playAgain = $('<div class="button">');
+      $playAgain.html("Press any key to play again!");
+      view.$el.append($playAgain);
+      $(window).keypress(function(e){
+        history.go(0);
+      });
     }
   };
 

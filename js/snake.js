@@ -4,6 +4,7 @@
   var Coord = Snakes.Coord = function(pos) {
     this.row = pos[0];
     this.col = pos[1];
+    // this.apple = apple;
   };
 
   Coord.prototype = {
@@ -16,8 +17,10 @@
   var Snake = Snakes.Snake = function() {
     this.dir = "N";
     this.segments = [new Coord([5, 5])];
+    this.apples = [];
     this.size = 1;
-    setInterval(function(){this.size += 1}.bind(this), 2000);
+    setInterval(this.apple.bind(this), 5000);
+    // setInterval(function(){this.size += 1}.bind(this), 2000);
   };
 
   Snake.DIRS = ["N", "E", "S", "W"];
@@ -68,7 +71,50 @@
     },
 
     apple : function() {
+      if (this.apples.length === 0){
+        var uniqueSegment = false
+        var that = this;
+        // console.log(this.segments);
+        while (!uniqueSegment) {
+          uniqueSegment = true
+          var x = Math.floor((Math.random() * 24) + 1);
+          var y = Math.floor((Math.random() * 39) + 1);
+          that.segments.map(function(segment){
+            if (segment.row === x && segment.col === y)
+              uniqueSegment = false;
+          });
+        }
+        var appleSegment = new Coord([x, y]);
+        // console.log(appleSegment);
+        this.apples.push(appleSegment);
+      }
+    },
 
+    grow : function() {
+      if (this.apples.length > 0){
+        var segment = this.segments[this.segments.length-1];
+        var apple = this.apples[0];
+        if (segment.row === apple.row && segment.col === apple.col){
+          this.size += 1;
+          this.apples.shift();
+        }
+      }
+    },
+
+    collision : function() {
+      var snakeHead = this.segments[this.segments.length-1];
+      var trueOrFalse = false;
+      this.segments.map(function(segment){
+        if (segment !== snakeHead && segment.row === snakeHead.row && segment.col === snakeHead.col){
+          // console.log("collision");
+          trueOrFalse = true;
+        }
+        if (segment.row < 0 || segment.col < 0 || segment.row > 25 || segment.col > 40){
+          // console.log("collision!");
+          trueOrFalse = true
+        }
+      });
+      return trueOrFalse;
     },
   };
 
@@ -106,7 +152,10 @@
     step : function() {
       // console.log("running");
       this.snake.move();
-      this.render;
+      // add collision test
+      this.snake.grow();
+      this.snake.collision();
+      // this.render;
     },
 
     render : function() {
