@@ -90,8 +90,22 @@
       $playAgain = $('<div class="button">');
       $playAgain.html("Press any key to play again!");
       view.$el.append($playAgain);
+      var that = this;
       $(window).keypress(function(e){
         history.go(0);
+        // delete that.board;
+        // var snake = new Snakes.Snake();
+        // var board = new Snakes.Board(snake);
+        // // var $el = $("#snake");
+        // // var view = new Snakes.View($el, board);
+        // // debugger
+        // that.board = board;
+        // // debugger
+        // that.board.setGrid();
+        // // debugger
+        // that.render();
+
+        // $(window).unbind("keypress");
       });
     }
   };

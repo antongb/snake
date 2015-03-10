@@ -15,9 +15,9 @@
   };
 
   var Snake = Snakes.Snake = function() {
-    this.dir = "N";
+    this.dir = "E";
     this.segments = [new Coord([5, 5])];
-    this.apples = [];
+    this.apples = [new Coord([20, 13])];
     this.size = 1;
     setInterval(this.apple.bind(this), 5000);
     // setInterval(function(){this.size += 1}.bind(this), 2000);
